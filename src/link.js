@@ -30,19 +30,39 @@ export default function(links) {
   }
 
   function force(alpha) {
-    for (var k = 0, n = links.length; k < iterations; ++k) {
+
+    // energy-conserving spring force
+    if (iterations == 0) {
       for (var i = 0, link, source, target, x, y, l, b; i < n; ++i) {
         link = links[i], source = link.source, target = link.target;
-        x = target.x + target.vx - source.x - source.vx || jiggle(random);
-        y = target.y + target.vy - source.y - source.vy || jiggle(random);
+        x = target.x - source.x || jiggle(random);
+        y = target.y - source.y || jiggle(random);
         l = Math.sqrt(x * x + y * y);
         l = (l - distances[i]) / l * alpha * strengths[i];
         x *= l, y *= l;
-        target.vx -= x * (b = bias[i]);
-        target.vy -= y * b;
-        source.vx += x * (b = 1 - b);
-        source.vy += y * b;
+        target.force_x -= x * (b = bias[i]);
+        target.force_y -= y * b;
+        source.force_x += x * (b = 1 - b);
+        source.force_y += y * b;
       }
+    } else {
+
+      // iterative-relaxation (see https://github.com/d3/d3-force/issues/193)
+      for (var k = 0, n = links.length; k < iterations; ++k) {
+        for (var i = 0, link, source, target, x, y, l, b; i < n; ++i) {
+          link = links[i], source = link.source, target = link.target;
+          x = target.x + target.vx - source.x - source.vx || jiggle(random);
+          y = target.y + target.vy - source.y - source.vy || jiggle(random);
+          l = Math.sqrt(x * x + y * y);
+          l = (l - distances[i]) / l * alpha * strengths[i];
+          x *= l, y *= l;
+          target.vx -= x * (b = bias[i]);
+          target.vy -= y * b;
+          source.vx += x * (b = 1 - b);
+          source.vy += y * b;
+        }
+      }
+
     }
   }
 
