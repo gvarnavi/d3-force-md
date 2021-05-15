@@ -1,5 +1,6 @@
 import {terser} from "rollup-plugin-terser";
 import * as meta from "./package.json";
+import {nodeResolve} from '@rollup/plugin-node-resolve';
 
 const config = {
   input: "src/index.js",
@@ -26,6 +27,7 @@ export default [
     },
     plugins: [
       ...config.plugins,
+      nodeResolve({ jsnext: true }),
       terser({
         output: {
           preamble: config.output.banner

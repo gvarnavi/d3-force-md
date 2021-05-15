@@ -1,7 +1,7 @@
 {
-  "name": "d3-force",
-  "version": "2.1.1",
-  "description": "Force-directed graph layout using velocity Verlet integration.",
+  "name": "d3-force-vv",
+  "version": "0.0.1",
+  "description": "Force-directed graph layout using true velocity Verlet integration.",
   "keywords": [
     "d3",
     "d3-module",
@@ -10,21 +10,22 @@
     "graph",
     "force",
     "verlet",
-    "infovis"
+    "infovis",
+    "molecular-dynamics"
   ],
-  "homepage": "https://d3js.org/d3-force/",
+  "homepage": "https://github.com/gvarnavi/d3-force-vv",
   "license": "BSD-3-Clause",
   "author": {
-    "name": "Mike Bostock",
-    "url": "http://bost.ocks.org/mike"
+    "name": "Georgios Varnavides",
+    "url": "https://observablehq.com/@gvarnavi"
   },
-  "main": "dist/d3-force.js",
-  "unpkg": "dist/d3-force.min.js",
-  "jsdelivr": "dist/d3-force.min.js",
+  "main": "dist/d3-force-vv.js",
+  "unpkg": "dist/d3-force-vv.min.js",
+  "jsdelivr": "dist/d3-force-vv.min.js",
   "module": "src/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/d3/d3-force.git"
+    "url": "https://github.com/gvarnavi/d3-force-vv.git"
   },
   "scripts": {
     "pretest": "rollup -c",
@@ -36,16 +37,5 @@
     "src/**/*.js",
     "dist/**/*.js"
   ],
-  "dependencies": {
-    "d3-dispatch": "1 - 2",
-    "d3-quadtree": "1 - 2",
-    "d3-timer": "1 - 2"
-  },
-  "sideEffects": false,
-  "devDependencies": {
-    "eslint": "6",
-    "rollup": "1",
-    "rollup-plugin-terser": "5",
-    "tape": "4"
-  }
+  "sideEffects": false
 }
