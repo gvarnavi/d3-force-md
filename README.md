@@ -64,6 +64,8 @@ This method can be used in conjunction with [*simulation*.stop](#simulation_stop
 
 If *dt* is specified, sets the simulation's time-step to the specified number and returns this simulation. If *dt* is not specified, returns the current time-step value, which defaults to 1.
 
+In molecular dynamics simulations, it is common to set [*dt*](#simulation_dt) to appropriate normalized units. E.g. for interatomic potentials normalized to have a minimum value of -1 at distance of 1, 0.05 is a reasonable initial estimate for the time-step value.
+
 <a name="simulation_nodes" href="#simulation_nodes">#</a> <i>simulation</i>.<b>nodes</b>([<i>nodes</i>]) · [Source](https://github.com/d3/d3-force/blob/master/src/simulation.js)
 
 If *nodes* is specified, sets the simulation’s nodes to the specified array of objects, initializing their positions, velocities, and forces if necessary, and then [re-initializes](#force_initialize) any bound [forces](#simulation_force); returns the simulation. If *nodes* is not specified, returns the simulation’s array of nodes as specified to the [constructor](#forceSimulation).
