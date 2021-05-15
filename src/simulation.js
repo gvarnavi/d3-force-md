@@ -15,6 +15,7 @@ var initialRadius = 10,
 
 export default function(nodes) {
   var simulation,
+      dt = 1,		
       alpha = 1,
       alphaMin = 0.001,
       alphaDecay = 1 - Math.pow(alphaMin, 1 / 300),
@@ -28,7 +29,7 @@ export default function(nodes) {
   if (nodes == null) nodes = [];
 
   function step() {
-    tick();
+    tick(dt);
     event.call("tick", simulation);
     if (alpha < alphaMin) {
       stepper.stop();
@@ -43,18 +44,42 @@ export default function(nodes) {
 
     for (var k = 0; k < iterations; ++k) {
       alpha += (alphaTarget - alpha) * alphaDecay;
+      
+      // update velocities (half-step)
+      for (i = 0; i < n; ++i) {
+        node = nodes[i];
 
+        if (node.fx == null) node.vx += 0.5*node.force_x*dt*velocityDecay/node.mass;
+        else node.vx = 0;
+        if (node.fy == null) node.vy += 0.5*node.force_y*dt*velocityDecay/node.mass;
+        else node.vy = 0;
+      }
+      
+      // update positions
+      for (i = 0; i < n; ++i) {
+        node = nodes[i];
+        
+        if (node.fx == null) node.x += node.vx*dt;
+        else node.x = node.fx;
+        if (node.fy == null) node.y += node.vy*dt;
+        else node.y = node.fy;
+      }
+
+      // compute new forces and energies based on positions
       forces.forEach(function(force) {
         force(alpha);
       });
 
+      // update velocities (full-step)
       for (i = 0; i < n; ++i) {
         node = nodes[i];
-        if (node.fx == null) node.x += node.vx *= velocityDecay;
-        else node.x = node.fx, node.vx = 0;
-        if (node.fy == null) node.y += node.vy *= velocityDecay;
-        else node.y = node.fy, node.vy = 0;
+
+        if (node.fx == null) node.vx += 0.5*node.force_x*dt*velocityDecay/node.mass;
+        else node.vx = 0;
+        if (node.fy == null) node.vy += 0.5*node.force_y*dt*velocityDecay/node.mass;
+        else node.vy = 0;
       }
+
     }
 
     return simulation;
@@ -62,17 +87,27 @@ export default function(nodes) {
 
   function initializeNodes() {
     for (var i = 0, n = nodes.length, node; i < n; ++i) {
+
       node = nodes[i], node.index = i;
+
       if (node.fx != null) node.x = node.fx;
       if (node.fy != null) node.y = node.fy;
+
       if (isNaN(node.x) || isNaN(node.y)) {
         var radius = initialRadius * Math.sqrt(0.5 + i), angle = i * initialAngle;
         node.x = radius * Math.cos(angle);
         node.y = radius * Math.sin(angle);
       }
+
       if (isNaN(node.vx) || isNaN(node.vy)) {
         node.vx = node.vy = 0;
       }
+
+      if (isNaN(node.force_x) || isNaN(node.force_y)) {
+        node.force_x = node.force_y = 0;
+      }
+
+      if (isNaN(node.mass)) node.mass = 1;
     }
   }
 
@@ -104,6 +139,11 @@ export default function(nodes) {
 
     alphaMin: function(_) {
       return arguments.length ? (alphaMin = +_, simulation) : alphaMin;
+    },
+
+    
+    dt: function(_) {
+      return arguments.length ? (dt = +_, simulation) : dt;
     },
 
     alphaDecay: function(_) {
