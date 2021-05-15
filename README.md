@@ -1,6 +1,6 @@
 # d3-force-vv
 
-Extended version of [d3-force](https://github.com/d3/d3-force) to implement a _true_ velocity verlet algorithm and extend built-in forces to account for common interatomic potentials encountered in molecular dynamics simulations. See this [notebook](https://observablehq.com/d/922de548dc27c531) for more explanation on the differences between the [core d3-force implementation](https://github.com/d3/d3-force#simulation).
+Extended version of [d3-force](https://github.com/d3/d3-force) to implement a _true_ [velocity Verlet](https://en.wikipedia.org/wiki/Verlet_integration) algorithm and extend built-in forces to account for common interatomic potentials encountered in molecular dynamics simulations. See this [notebook](https://observablehq.com/d/922de548dc27c531) for more explanation on the differences between the [core d3-force implementation](https://github.com/d3/d3-force#simulation).
 
 In the domain of information visualization, physical simulations are useful for studying [networks](https://observablehq.com/@d3/force-directed-graph) and [hierarchies](https://observablehq.com/@d3/force-directed-tree)!
 
@@ -60,19 +60,27 @@ This method does not dispatch [events](#simulation_on); events are only dispatch
 
 This method can be used in conjunction with [*simulation*.stop](#simulation_stop) to compute a [static force layout](https://bl.ocks.org/mbostock/1667139). For large graphs, static layouts should be computed [in a web worker](https://bl.ocks.org/mbostock/01ab2e85e8727d6529d20391c0fd9a16) to avoid freezing the user interface.
 
+<a name="simulation_dt" href="#simulation_dt">#</a> <i>simulation</i>.<b>dt</b>([<i>dt</i>]) · [Source](https://github.com/d3/d3-force/blob/master/src/simulation.js)
+
+If *dt* is specified, sets the simulation's time-step to the specified number and returns this simulation. If *dt* is not specified, returns the current time-step value, which defaults to 1.
+
 <a name="simulation_nodes" href="#simulation_nodes">#</a> <i>simulation</i>.<b>nodes</b>([<i>nodes</i>]) · [Source](https://github.com/d3/d3-force/blob/master/src/simulation.js)
 
-If *nodes* is specified, sets the simulation’s nodes to the specified array of objects, initializing their positions and velocities if necessary, and then [re-initializes](#force_initialize) any bound [forces](#simulation_force); returns the simulation. If *nodes* is not specified, returns the simulation’s array of nodes as specified to the [constructor](#forceSimulation).
+If *nodes* is specified, sets the simulation’s nodes to the specified array of objects, initializing their positions, velocities, and forces if necessary, and then [re-initializes](#force_initialize) any bound [forces](#simulation_force); returns the simulation. If *nodes* is not specified, returns the simulation’s array of nodes as specified to the [constructor](#forceSimulation).
 
 Each *node* must be an object. The following properties are assigned by the simulation:
 
 * `index` - the node’s zero-based index into *nodes*
+* `mass` - the node’s mass
 * `x` - the node’s current *x*-position
 * `y` - the node’s current *y*-position
 * `vx` - the node’s current *x*-velocity
 * `vy` - the node’s current *y*-velocity
+* `force_x` - the node’s current *x*-force
+* `force_y` - the node’s current *y*-force
 
-The position ⟨*x*,*y*⟩ and velocity ⟨*vx*,*vy*⟩ may be subsequently modified by [forces](#forces) and by the simulation. If either *vx* or *vy* is NaN, the velocity is initialized to ⟨0,0⟩. If either *x* or *y* is NaN, the position is initialized in a [phyllotaxis arrangement](https://observablehq.com/@d3/force-layout-phyllotaxis), so chosen to ensure a deterministic, uniform distribution.
+The position ⟨*x*,*y*⟩ and velocity ⟨*vx*,*vy*⟩ may be subsequently modified by [forces](#forces) and by the simulation. If either *vx* or *vy* is NaN, the velocity is initialized to ⟨0,0⟩. If either *force_x* or *force_y* is NaN, the force is initialized to ⟨0,0⟩. If either *x* or *y* is NaN, the position is initialized in a [phyllotaxis arrangement](https://observablehq.com/@d3/force-layout-phyllotaxis), so chosen to ensure a deterministic, uniform distribution.
+If `mass` is NaN, the mass is initialized to 1.
 
 To fix a node in a given position, you may specify two additional properties:
 
@@ -99,6 +107,8 @@ If *decay* is specified, sets the [*alpha*](#simulation_alpha) decay rate to the
 
 The alpha decay rate determines how quickly the current alpha interpolates towards the desired [target *alpha*](#simulation_alphaTarget); since the default target *alpha* is zero, by default this controls how quickly the simulation cools. Higher decay rates cause the simulation to stabilize more quickly, but risk getting stuck in a local minimum; lower values cause the simulation to take longer to run, but typically converge on a better layout. To have the simulation run forever at the current *alpha*, set the *decay* rate to zero; alternatively, set a [target *alpha*](#simulation_alphaTarget) greater than the [minimum *alpha*](#simulation_alphaMin).
 
+In molecular dynamics simulations, it is common to set both [*alphaDecay*](#simulation_alphaDecay) and [*velocityDecay*](#simulation_velocityDecay) to 0.
+
 <a name="simulation_alphaTarget" href="#simulation_alphaTarget">#</a> <i>simulation</i>.<b>alphaTarget</b>([<i>target</i>]) · [Source](https://github.com/d3/d3-force/blob/master/src/simulation.js)
 
 If *target* is specified, sets the current target [*alpha*](#simulation_alpha) to the specified number in the range [0,1] and returns this simulation. If *target* is not specified, returns the current target alpha value, which defaults to 0.
@@ -106,6 +116,8 @@ If *target* is specified, sets the current target [*alpha*](#simulation_alpha) t
 <a name="simulation_velocityDecay" href="#simulation_velocityDecay">#</a> <i>simulation</i>.<b>velocityDecay</b>([<i>decay</i>]) · [Source](https://github.com/d3/d3-force/blob/master/src/simulation.js)
 
 If *decay* is specified, sets the velocity decay factor to the specified number in the range [0,1] and returns this simulation. If *decay* is not specified, returns the current velocity decay factor, which defaults to 0.4. The decay factor is akin to atmospheric friction; after the application of any forces during a [tick](#simulation_tick), each node’s velocity is multiplied by 1 - *decay*. As with lowering the [alpha decay rate](#simulation_alphaDecay), less velocity decay may converge on a better solution, but risks numerical instabilities and oscillation.
+
+In molecular dynamics simulations, it is common to set both [*alphaDecay*](#simulation_alphaDecay) and [*velocityDecay*](#simulation_velocityDecay) to 0.
 
 <a name="simulation_force" href="#simulation_force">#</a> <i>simulation</i>.<b>force</b>(<i>name</i>[, <i>force</i>]) · [Source](https://github.com/d3/d3-force/blob/master/src/simulation.js)
 
