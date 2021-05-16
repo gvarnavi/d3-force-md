@@ -6,3 +6,5 @@ export {default as forceRadial} from "./radial.js";
 export {default as forceSimulation} from "./simulation.js";
 export {default as forceX} from "./x.js";
 export {default as forceY} from "./y.js";
+export {default as forceLennardJonesPotential} from "./lennardJonesPotential.js";
+export {default as forceCentralPotential} from "./centralPotential.js";
