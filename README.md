@@ -1,30 +1,30 @@
-# d3-force-vv
+# d3-force-md
 
 Extended version of [d3-force](https://github.com/d3/d3-force) to implement a _true_ [velocity Verlet](https://en.wikipedia.org/wiki/Verlet_integration) algorithm and extend built-in forces to account for common interatomic potentials encountered in molecular dynamics simulations. See this [notebook](https://observablehq.com/d/922de548dc27c531) for more explanation on the differences between the [core d3-force implementation](https://github.com/d3/d3-force#simulation).
 
 In the domain of information visualization, physical simulations are useful for studying [networks](https://observablehq.com/@d3/force-directed-graph) and [hierarchies](https://observablehq.com/@d3/force-directed-tree)!
 
-[<img alt="Force-Directed Graph" src="https://raw.githubusercontent.com/gvarnavi/d3-force-vv/master/img/graph.png" width="420" height="219">](https://observablehq.com/@d3/force-directed-graph)[<img alt="Force-Directed Tree" src="https://raw.githubusercontent.com/d3/d3-force/master/img/tree.png" width="420" height="219">](https://observablehq.com/@d3/force-directed-tree)
+[<img alt="Force-Directed Graph" src="https://raw.githubusercontent.com/gvarnavi/d3-force-md/master/img/graph.png" width="420" height="219">](https://observablehq.com/@d3/force-directed-graph)[<img alt="Force-Directed Tree" src="https://raw.githubusercontent.com/gvarnavi/d3-force-md/master/img/tree.png" width="420" height="219">](https://observablehq.com/@d3/force-directed-tree)
 
 You can also simulate circles (disks) with collision, such as for [bubble charts](http://www.nytimes.com/interactive/2012/09/06/us/politics/convention-word-counts.html) or [beeswarm plots](https://observablehq.com/@d3/beeswarm):
 
-[<img alt="Collision Detection" src="https://raw.githubusercontent.com/gvarnavi/d3-force-vv/master/img/collide.png" width="420" height="219">](https://observablehq.com/@d3/collision-detection)[<img alt="Beeswarm" src="https://raw.githubusercontent.com/d3/d3-force/master/img/beeswarm.png" width="420" height="219">](https://observablehq.com/@d3/beeswarm)
+[<img alt="Collision Detection" src="https://raw.githubusercontent.com/gvarnavi/d3-force-md/master/img/collide.png" width="420" height="219">](https://observablehq.com/@d3/collision-detection)[<img alt="Beeswarm" src="https://raw.githubusercontent.com/gvarnavi/d3-force-md/master/img/beeswarm.png" width="420" height="219">](https://observablehq.com/@d3/beeswarm)
 
 Interestingly, there are also many examples of using the module directly to simulate physical systems (some d3-force plugins to do this are nicely curated [here](https://github.com/vasturiano/d3-force-registry)). This extended module, enables 2D molecular dynamics simulations beyond toy-examples.
 
-[<img alt="Spinning Particle" src="https://raw.githubusercontent.com/gvarnavi/d3-force-vv/master/img/nanoparticle-lennard-jones.png" width="480" height="250">](https://observablehq.com/d/b44c80eb6f864fd8)
+[<img alt="Spinning Particle" src="https://raw.githubusercontent.com/gvarnavi/d3-force-md/master/img/nanoparticle-lennard-jones.png" width="480" height="250">](https://observablehq.com/d/b44c80eb6f864fd8)
 
 To use this module, create a [simulation](#simulation) for an array of [nodes](#simulation_nodes), and compose the desired [forces](#simulation_force). Then [listen](#simulation_on) for tick events to render the nodes as they update in your preferred graphics system, such as Canvas or SVG.
 
 ## Installing
 
-If you use NPM, `npm install d3-force-vv`. Otherwise, download the [latest release](https://github.com/gvarnavi/d3-force-vv/releases/latest). You can also load a [standalone library](https://unpkg.com/d3-force-vv). AMD, CommonJS, and vanilla environments are supported. In vanilla, a `d3` global is exported:
+If you use NPM, `npm install d3-force-md`. Otherwise, download the [latest release](https://github.com/gvarnavi/d3-force-md/releases/latest). You can also load a [standalone library](https://unpkg.com/d3-force-md). AMD, CommonJS, and vanilla environments are supported. In vanilla, a `d3` global is exported:
 
 ```html
 <script src="https://d3js.org/d3-dispatch.v2.min.js"></script>
 <script src="https://d3js.org/d3-quadtree.v2.min.js"></script>
 <script src="https://d3js.org/d3-timer.v2.min.js"></script>
-<script src="https://unpkg.com/d3-force-vv"></script>
+<script src="https://unpkg.com/d3-force-md"></script>
 <script>
 
 var simulation = d3.forceSimulation(nodes);
@@ -32,7 +32,7 @@ var simulation = d3.forceSimulation(nodes);
 </script>
 ```
 
-[Try d3-force-vv in your browser.](https://observablehq.com/d/b44c80eb6f864fd8)
+[Try d3-force-md in your browser.](https://observablehq.com/d/b44c80eb6f864fd8)
 
 ## API Reference
 
