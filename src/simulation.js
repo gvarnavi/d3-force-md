@@ -49,19 +49,19 @@ export default function(nodes) {
       for (i = 0; i < n; ++i) {
         node = nodes[i];
 
-        if (node.fx == null) node.vx += 0.5*node.force_x*dt*velocityDecay/node.mass;
-        else node.vx = 0;
-        if (node.fy == null) node.vy += 0.5*node.force_y*dt*velocityDecay/node.mass;
-        else node.vy = 0;
+        if (node.fx == null) node.vx += 0.5*node.force_x*dt/node.mass;
+        else node.vx = 0, node.force_x = 0, node.x = node.fx;
+        if (node.fy == null) node.vy += 0.5*node.force_y*dt/node.mass;
+        else node.vy = 0, node.force_y = 0, node.y = node.fy;
       }
       
       // update positions
       for (i = 0; i < n; ++i) {
         node = nodes[i];
         
-        if (node.fx == null) node.x += node.vx*dt;
+        if (node.fx == null) node.x += dt*(node.vx *= velocityDecay);
         else node.x = node.fx;
-        if (node.fy == null) node.y += node.vy*dt;
+        if (node.fy == null) node.y += dt*(node.vy *= velocityDecay);
         else node.y = node.fy;
       }
 
@@ -74,10 +74,10 @@ export default function(nodes) {
       for (i = 0; i < n; ++i) {
         node = nodes[i];
 
-        if (node.fx == null) node.vx += 0.5*node.force_x*dt*velocityDecay/node.mass;
-        else node.vx = 0;
-        if (node.fy == null) node.vy += 0.5*node.force_y*dt*velocityDecay/node.mass;
-        else node.vy = 0;
+        if (node.fx == null) node.vx += 0.5*node.force_x*dt/node.mass;
+        else node.vx = 0, node.force_x = 0, node.x = node.fx;
+        if (node.fy == null) node.vy += 0.5*node.force_y*dt/node.mass;
+        else node.vy = 0, node.force_y = 0, node.y = node.fy;
       }
 
     }

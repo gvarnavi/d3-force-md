@@ -33,7 +33,7 @@ export default function(links) {
 
     // energy-conserving spring force
     if (iterations == 0) {
-      for (var i = 0, link, source, target, x, y, l, b; i < n; ++i) {
+      for (let i = 0, link, source, target, x, y, l, b; i < n; ++i) {
         link = links[i], source = link.source, target = link.target;
         x = target.x - source.x || jiggle(random);
         y = target.y - source.y || jiggle(random);
