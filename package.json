@@ -1,7 +1,7 @@
 {
-  "name": "d3-force-vv",
+  "name": "d3-force-md",
   "version": "0.0.1",
-  "description": "Force-directed graph layout using true velocity Verlet integration.",
+  "description": "Force-directed graph layout using true velocity Verlet integration for use in molecular dynamics.",
   "keywords": [
     "d3",
     "d3-module",
@@ -13,19 +13,19 @@
     "infovis",
     "molecular-dynamics"
   ],
-  "homepage": "https://github.com/gvarnavi/d3-force-vv",
+  "homepage": "https://github.com/gvarnavi/d3-force-md",
   "license": "BSD-3-Clause",
   "author": {
     "name": "Georgios Varnavides",
     "url": "https://observablehq.com/@gvarnavi"
   },
-  "main": "dist/d3-force-vv.js",
-  "unpkg": "dist/d3-force-vv.min.js",
-  "jsdelivr": "dist/d3-force-vv.min.js",
+  "main": "dist/d3-force-md.js",
+  "unpkg": "dist/d3-force-md.min.js",
+  "jsdelivr": "dist/d3-force-md.min.js",
   "module": "src/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gvarnavi/d3-force-vv.git"
+    "url": "https://github.com/gvarnavi/d3-force-md.git"
   },
   "scripts": {
     "pretest": "rollup -c",
