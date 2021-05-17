@@ -2,7 +2,8 @@
 
 Extended version of [d3-force](https://github.com/d3/d3-force) to implement a _true_ [velocity Verlet](https://en.wikipedia.org/wiki/Verlet_integration) algorithm and extend built-in forces to account for common interatomic potentials encountered in molecular dynamics simulations.
 Backwards compatible with [d3-force](https://github.com/d3/d3-force) (version [2.1.1](https://github.com/d3/d3-force/tree/v2.1.1)), and should just work as a drop-in replacement d3 module.
-See this [notebook](https://observablehq.com/d/922de548dc27c531) for more explanation on the differences between the [core d3-force implementation](https://github.com/d3/d3-force#simulation).
+
+See this [notebook](https://observablehq.com/@gvarnavi/introduction-to-d3-force-md) for more explanation on the differences between the [core d3-force implementation](https://github.com/d3/d3-force#simulation), and this [notebook](https://observablehq.com/@gvarnavi/d3-force-md-documentation) for a documentation of the changes.
 
 In the domain of information visualization, physical simulations are useful for studying [networks](https://observablehq.com/@d3/force-directed-graph) and [hierarchies](https://observablehq.com/@d3/force-directed-tree)!
 
