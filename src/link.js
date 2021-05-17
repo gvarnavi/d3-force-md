@@ -31,9 +31,14 @@ export default function(links) {
 
   function force(alpha) {
 
+    for (let j = 0, node, n = nodes.length; j < n; ++j) {
+      node = nodes[j];
+      node.force_x = 0, node.force_y = 0;
+    }
+
     // energy-conserving spring force
     if (iterations == 0) {
-      for (let i = 0, link, source, target, x, y, l, b; i < n; ++i) {
+      for (let i = 0, link, source, target, x, y, l, b, n = links.length; i < n; ++i) {
         link = links[i], source = link.source, target = link.target;
         x = target.x - source.x || jiggle(random);
         y = target.y - source.y || jiggle(random);
